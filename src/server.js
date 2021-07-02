@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyparser = require('body-parser');
+const util = require('./utils');
 const server = express();
 
 const personas = [];
@@ -30,7 +31,7 @@ server.get('/persona/:id', (req, res) => {
     res.send(personas.find(f => f.id = req.params.id));
 });
 
-server.post('/persona', (req, res) => {
+server.post('/persona', util.validateEmail, (req, res) => {
     const params = req.body;
     personas.push(params);
     res.send('se creo la persona con exito');
