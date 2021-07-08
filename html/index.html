@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <ol id="lista">
+            
+        </ol>
+
+        <input id="id" type="number"> <br>
+        <input id="Name" type="text"> <br>
+        <input id="Lastname" type="text"> <br>
+        <input id="email" type="email"> <br>
+        <button onclick="addPersona()">Enviar</button>
+    </div>
+
+    <script>
+        
+        getpersonas();
+
+        function getpersonas() {
+            const lista = document.getElementById('lista');
+            fetch('http://localhost:3000/personas').then(response => response.json())
+            .then(data => {
+                const personas = data;
+                lista.innerHTML = '';
+                for (const persona of personas) {
+                    lista.innerHTML +=`<li> ${persona.Name} </li>`
+                }
+            });
+        }
+
+
+        function addPersona() {
+            fetch('http://localhost:3000/persona', {
+                method: 'POST',               
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify( {
+                    id: document.getElementById('id').value,
+                    Name: document.getElementById('Name').value,
+                    Lastname: document.getElementById('Lastname').value,
+                    email: document.getElementById('email').value
+                }),
+            }).then(response => response)
+            .then(data => {
+                getpersonas();
+            })
+        }
+        
+    </script>
+</body>
+</html>
